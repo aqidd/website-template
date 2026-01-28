@@ -45,18 +45,20 @@ Install AI coding skills using ctx7:
 # Run the skills installation script
 ./install-skills.sh
 
-# Or install skills manually
-ctx7 skills install /anthropics/skills remotion
-ctx7 skills install /anthropics/skills frontend-design
-ctx7 skills install /anthropics/skills backend
-ctx7 skills install /anthropics/skills playwright
+# Or search and install skills manually
+ctx7 skills search remotion
+ctx7 skills search frontend
+ctx7 skills search backend
+ctx7 skills search playwright
 ```
 
-Available skills:
+Available skills (install based on ctx7 registry):
 - `remotion` - Video generation with React
 - `frontend-design` - Modern web UI with Next.js + Tailwind
 - `backend` - RESTful API with Express + TypeScript
 - `testing` - E2E testing with Playwright
+
+**Note:** Visit https://context7.com to browse available skills in the registry.
 
 List installed skills:
 ```bash
@@ -158,13 +160,6 @@ Get API keys:
    - Related queries from real users
    - Rising queries (trending now)
    - Timestamp for tracking
-   - Hero section
-   - Feature highlights
-   - Trending topics
-   - Modern CSS animations
-   - Mobile-responsive design
-
-3. **Trend Data JSON** - Raw trend data for further analysis
 
 ## 🎯 OpenCode Skills
 

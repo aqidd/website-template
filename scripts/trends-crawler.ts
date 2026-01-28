@@ -96,7 +96,7 @@ class GoogleTrendsCrawler {
         throw new Error(`SERP API error: ${response.status} ${response.statusText}`);
       }
       
-      const data = await response.json();
+      const data = await response.json() as any;
       
       const relatedQueries: string[] = [];
       const risingQueries: string[] = [];
@@ -137,11 +137,12 @@ class GoogleTrendsCrawler {
   }
 
   private generateFallbackQueries(keyword: string, type: 'related' | 'rising'): string[] {
+    const currentYear = new Date().getFullYear();
     if (type === 'related') {
       return [
         `${keyword} trends`,
         `best ${keyword}`,
-        `${keyword} 2024`,
+        `${keyword} ${currentYear}`,
         `how to ${keyword}`,
         `${keyword} guide`,
         `${keyword} tutorial`,
@@ -212,7 +213,7 @@ class GoogleTrendsCrawler {
       throw new Error(`Groq API error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as any;
     return data.choices[0]?.message?.content || '';
   }
 
@@ -247,7 +248,7 @@ class GoogleTrendsCrawler {
       throw new Error(`OpenRouter API error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as any;
     return data.choices[0]?.message?.content || '';
   }
 
@@ -512,11 +513,24 @@ async function main() {
     switch (args[i]) {
       case '--keyword':
       case '-k':
+        if (i + 1 >= args.length) {
+          console.error('❌ Error: --keyword requires a value');
+          process.exit(1);
+        }
         keyword = args[++i];
         break;
       case '--count':
       case '-c':
-        count = parseInt(args[++i], 10);
+        if (i + 1 >= args.length) {
+          console.error('❌ Error: --count requires a value');
+          process.exit(1);
+        }
+        const countValue = parseInt(args[++i], 10);
+        if (isNaN(countValue) || countValue <= 0) {
+          console.error('❌ Error: --count must be a positive number');
+          process.exit(1);
+        }
+        count = countValue;
         break;
       case '--no-article':
         generateArticle = false;
@@ -526,6 +540,10 @@ async function main() {
         break;
       case '--output-dir':
       case '-o':
+        if (i + 1 >= args.length) {
+          console.error('❌ Error: --output-dir requires a value');
+          process.exit(1);
+        }
         outputDir = args[++i];
         break;
       case '--help':

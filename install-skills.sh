@@ -18,27 +18,25 @@ fi
 echo "✓ ctx7 is available"
 echo ""
 
-# Install skills from Anthropic's repository
-echo "📦 Installing skills from /anthropics/skills..."
+# Install skills from repositories
+# Note: Update these paths based on available ctx7 skill repositories
+# Visit https://context7.com to browse available skills
+echo "📦 Installing skills..."
 
-# Note: These are example skill installations
-# Replace with actual repositories and skill names based on your needs
+# Try to install common skills
+# These may need to be adjusted based on what's available in ctx7 registries
 
-# Install remotion skill
-echo "  - Installing remotion skill..."
-ctx7 skills install /anthropics/skills remotion || echo "    ⚠️  remotion skill not found, will use fallback"
+echo "  - Attempting to install remotion skill..."
+ctx7 skills install remotion || echo "    ⚠️  remotion skill not found in registry"
 
-# Install frontend-design skill
-echo "  - Installing frontend-design skill..."
-ctx7 skills install /anthropics/skills frontend-design || echo "    ⚠️  frontend-design skill not found, will use fallback"
+echo "  - Attempting to install frontend-design skill..."
+ctx7 skills install frontend-design || echo "    ⚠️  frontend-design skill not found in registry"
 
-# Install backend skill
-echo "  - Installing backend skill..."
-ctx7 skills install /anthropics/skills backend || echo "    ⚠️  backend skill not found, will use fallback"
+echo "  - Attempting to install backend skill..."
+ctx7 skills install backend || echo "    ⚠️  backend skill not found in registry"
 
-# Install testing/playwright skill
-echo "  - Installing testing skill..."
-ctx7 skills install /anthropics/skills playwright || echo "    ⚠️  playwright skill not found, will use fallback"
+echo "  - Attempting to install playwright skill..."
+ctx7 skills install playwright || echo "    ⚠️  playwright skill not found in registry"
 
 echo ""
 echo "✨ Skills installation complete!"
@@ -46,7 +44,10 @@ echo ""
 echo "To list installed skills:"
 echo "  ctx7 skills list"
 echo ""
-echo "To search for more skills:"
+echo "To search for available skills:"
 echo "  ctx7 skills search <keyword>"
 echo ""
 echo "Visit https://context7.com to browse available skills"
+echo ""
+echo "Note: Skill paths may vary. Update install-skills.sh based on"
+echo "      available repositories in the ctx7 registry."
