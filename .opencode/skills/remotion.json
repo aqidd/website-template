@@ -1,0 +1,44 @@
+{
+  "name": "remotion",
+  "description": "Video and animation generation using Remotion",
+  "version": "1.0.0",
+  "capabilities": [
+    "video-generation",
+    "animation",
+    "motion-graphics",
+    "programmatic-video"
+  ],
+  "dependencies": {
+    "remotion": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "configuration": {
+    "videoFormat": "mp4",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 300
+  },
+  "examples": [
+    {
+      "name": "Landing Page Video",
+      "description": "Generate promotional video for landing page",
+      "command": "npm run remotion:render"
+    },
+    {
+      "name": "Social Media Clip",
+      "description": "Create short video for social media",
+      "command": "npm run remotion:render -- --props '{\"format\":\"square\"}'"
+    }
+  ],
+  "guidelines": [
+    "Use TypeScript for all Remotion components",
+    "Keep video components modular and reusable",
+    "Use interpolation for smooth animations",
+    "Export compositions in multiple formats for different platforms",
+    "Optimize rendering performance by using useCurrentFrame hook efficiently"
+  ]
+}

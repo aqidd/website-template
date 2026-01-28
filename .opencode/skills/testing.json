@@ -1,0 +1,56 @@
+{
+  "name": "testing",
+  "description": "End-to-end testing with Playwright for web applications",
+  "version": "1.0.0",
+  "capabilities": [
+    "e2e-testing",
+    "visual-regression",
+    "cross-browser-testing",
+    "mobile-testing",
+    "api-testing"
+  ],
+  "dependencies": {
+    "@playwright/test": "^1.40.0",
+    "playwright": "^1.40.0"
+  },
+  "configuration": {
+    "browsers": ["chromium", "firefox", "webkit"],
+    "testDir": "./tests/e2e",
+    "baseURL": "http://localhost:3000",
+    "timeout": 30000,
+    "retries": 2,
+    "screenshots": "only-on-failure",
+    "video": "retain-on-failure"
+  },
+  "examples": [
+    {
+      "name": "Landing Page Test",
+      "description": "Test landing page functionality and interactions",
+      "command": "npx playwright test landing-page.spec.ts"
+    },
+    {
+      "name": "Form Submission Test",
+      "description": "Test form validation and submission",
+      "command": "npx playwright test forms.spec.ts"
+    },
+    {
+      "name": "Visual Regression Test",
+      "description": "Compare screenshots for visual changes",
+      "command": "npx playwright test --update-snapshots"
+    }
+  ],
+  "guidelines": [
+    "Write tests that are independent and can run in any order",
+    "Use Page Object Model pattern for better maintainability",
+    "Test across multiple browsers (Chrome, Firefox, Safari)",
+    "Include mobile viewport testing",
+    "Use data-testid attributes for reliable selectors",
+    "Test critical user flows end-to-end",
+    "Add visual regression tests for important pages",
+    "Test accessibility using axe-core integration",
+    "Mock external API calls for consistent testing",
+    "Use fixtures for test data setup and teardown",
+    "Run tests in CI/CD pipeline",
+    "Generate and review HTML test reports"
+  ]
+}
