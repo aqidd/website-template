@@ -27,23 +27,57 @@ git clone https://github.com/aqidd/website-template.git
 cd website-template
 ```
 
-### 2. Install Ralph Wiggum
+### 2. Install Dependencies
 
 ```bash
+# Install Ralph Wiggum
 npm install -g @th0rgal/ralph-wiggum
+
+# Install ctx7 for managing OpenCode skills
+npm install -g ctx7
 ```
 
 ### 3. Set Up OpenCode Skills
 
-The repository includes pre-configured skills for:
-- `remotion` - Video generation
-- `frontend-design` - Web design
-- `backend` - API development
-- `testing` - Playwright E2E testing
+Install AI coding skills using ctx7:
 
-These skills are located in `.opencode/skills/` and will be automatically detected by OpenCode.
+```bash
+# Run the skills installation script
+./install-skills.sh
 
-### 4. Run Ralph Wiggum Loop
+# Or install skills manually
+ctx7 skills install /anthropics/skills remotion
+ctx7 skills install /anthropics/skills frontend-design
+ctx7 skills install /anthropics/skills backend
+ctx7 skills install /anthropics/skills playwright
+```
+
+Available skills:
+- `remotion` - Video generation with React
+- `frontend-design` - Modern web UI with Next.js + Tailwind
+- `backend` - RESTful API with Express + TypeScript
+- `testing` - E2E testing with Playwright
+
+List installed skills:
+```bash
+ctx7 skills list
+```
+
+### 4. Configure API Keys
+
+Copy `.env.example` to `.env` and add your API keys:
+
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+Required for full functionality:
+- `SERP_API_KEY` - Google Trends data (get from https://serpapi.com/)
+- `GROQ_API_KEY` - LLM for content generation (get from https://console.groq.com/)
+- `OPENROUTER_API_KEY` - Alternative LLM (get from https://openrouter.ai/)
+
+### 5. Run Ralph Wiggum Loop
 
 Start the autonomous development loop:
 
@@ -59,35 +93,71 @@ Or use the configuration file:
 ralph "Continue building the website template" --config ralph-wiggum.config.json
 ```
 
-## 📊 Google Trends Crawler
+## 📊 Google Trends Crawler with LLM
 
-Generate trending content automatically based on keywords.
+Generate AI-powered content based on trending keywords using Google Trends API and LLM (Groq/OpenRouter).
+
+### Features
+
+- **Real Google Trends Data**: Fetches actual trending and related queries via SERP API
+- **AI-Powered Content**: Uses Groq or OpenRouter LLM to generate high-quality content
+- **Fallback Support**: Works without API keys using template-based generation
 
 ### Usage
 
 ```bash
 # Generate article and landing page for a keyword
-node scripts/trends-crawler.ts --keyword "artificial intelligence"
+npm run trends:generate -- --keyword "artificial intelligence"
 
 # Generate with custom keyword count
-node scripts/trends-crawler.ts --keyword "web development" --count 10
+npm run trends:generate -- --keyword "web development" --count 10
 
 # Generate only landing page
-node scripts/trends-crawler.ts --keyword "marketing" --no-article
+npm run trends:generate -- --keyword "marketing" --no-article
 
 # Specify output directory
-node scripts/trends-crawler.ts --keyword "technology" --output-dir ./content
+npm run trends:generate -- --keyword "technology" --output-dir ./content
 ```
+
+### API Configuration
+
+For best results, configure these API keys in `.env`:
+
+```bash
+# Google Trends data (required for real trend data)
+SERP_API_KEY=your_key_here
+
+# LLM for content generation (choose one)
+GROQ_API_KEY=your_key_here           # Preferred - fast and free tier
+# OR
+OPENROUTER_API_KEY=your_key_here     # Alternative LLM provider
+```
+
+Get API keys:
+- SERP API: https://serpapi.com/ (for Google Trends)
+- Groq: https://console.groq.com/ (free tier available)
+- OpenRouter: https://openrouter.ai/ (pay-per-use)
 
 ### What It Generates
 
-1. **Markdown Article** - SEO-optimized blog post with:
-   - Comprehensive guide structure
-   - Related keywords integration
-   - Best practices and tips
-   - Call-to-actions
+1. **AI-Generated Article** - SEO-optimized blog post with:
+   - Comprehensive guide structure crafted by LLM
+   - Natural keyword integration
+   - Expert insights and best practices
+   - Engaging introduction and strong conclusion
+   - 800-1200 words of quality content
 
-2. **HTML Landing Page** - Responsive landing page with:
+2. **AI-Generated Landing Page** - Modern, responsive HTML with:
+   - Custom hero section designed for your topic
+   - Compelling features and benefits
+   - Trending topics display
+   - Modern CSS animations
+   - Mobile-responsive design
+
+3. **Trend Data JSON** - Raw Google Trends data:
+   - Related queries from real users
+   - Rising queries (trending now)
+   - Timestamp for tracking
    - Hero section
    - Feature highlights
    - Trending topics
