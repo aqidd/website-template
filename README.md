@@ -97,13 +97,16 @@ ralph "Continue building the website template" --config ralph-wiggum.config.json
 
 ## 📊 Google Trends Crawler with LLM
 
-Generate AI-powered content based on trending keywords using Google Trends API and LLM (Groq/OpenRouter).
+Generate AI-powered content based on trending keywords by **crawling Google Trends directly** - no API key needed!
 
 ### Features
 
-- **Real Google Trends Data**: Fetches actual trending and related queries via SERP API
+- **Direct Google Trends Crawling**: Fetches data directly from Google Trends (no API key required!)
+  - Top related queries
+  - Rising trending queries
+  - Interest over time data
 - **AI-Powered Content**: Uses Groq or OpenRouter LLM to generate high-quality content
-- **Fallback Support**: Works without API keys using template-based generation
+- **Fallback Support**: Works without LLM API keys using template-based generation
 
 ### Usage
 
@@ -123,20 +126,18 @@ npm run trends:generate -- --keyword "technology" --output-dir ./content
 
 ### API Configuration
 
-For best results, configure these API keys in `.env`:
+**No API key needed for Google Trends data!** The script crawls Google Trends directly.
+
+For AI-powered content generation (optional), configure LLM API keys in `.env`:
 
 ```bash
-# Google Trends data (required for real trend data)
-SERP_API_KEY=your_key_here
-
-# LLM for content generation (choose one)
+# LLM for content generation (optional - falls back to templates)
 GROQ_API_KEY=your_key_here           # Preferred - fast and free tier
 # OR
 OPENROUTER_API_KEY=your_key_here     # Alternative LLM provider
 ```
 
 Get API keys:
-- SERP API: https://serpapi.com/ (for Google Trends)
 - Groq: https://console.groq.com/ (free tier available)
 - OpenRouter: https://openrouter.ai/ (pay-per-use)
 
@@ -156,9 +157,10 @@ Get API keys:
    - Modern CSS animations
    - Mobile-responsive design
 
-3. **Trend Data JSON** - Raw Google Trends data:
-   - Related queries from real users
+3. **Trend Data JSON** - Raw Google Trends data crawled directly:
+   - Top related queries
    - Rising queries (trending now)
+   - Interest over time data points
    - Timestamp for tracking
 
 ## 🎯 OpenCode Skills

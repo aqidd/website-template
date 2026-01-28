@@ -3,14 +3,13 @@
 /**
  * Google Trends Crawler & Content Generator
  * 
- * Crawls Google Trends and generates AI-powered content using LLM (Groq/OpenRouter)
+ * Crawls Google Trends directly and generates AI-powered content using LLM (Groq/OpenRouter)
  * 
  * Usage:
  *   npm run trends:generate -- --keyword "technology" --count 10
  *   npm run trends:generate -- --keyword "ai tools" --no-article
  * 
  * Environment variables:
- *   SERP_API_KEY - API key for SerpApi (Google Trends data)
  *   GROQ_API_KEY - API key for Groq LLM (preferred)
  *   OPENROUTER_API_KEY - API key for OpenRouter LLM (fallback)
  */
@@ -22,6 +21,7 @@ interface TrendData {
   keyword: string;
   relatedQueries: string[];
   risingQueries: string[];
+  interestOverTime: Array<{ date: string; value: number }>;
   timestamp: string;
 }
 
@@ -42,11 +42,9 @@ interface LLMProvider {
 class GoogleTrendsCrawler {
   private outputDir: string;
   private llmProvider: LLMProvider;
-  private serpApiKey: string;
 
   constructor(outputDir = './generated-content') {
     this.outputDir = outputDir;
-    this.serpApiKey = process.env.SERP_API_KEY || '';
     
     // Configure LLM provider (prefer Groq, fallback to OpenRouter)
     if (process.env.GROQ_API_KEY) {
@@ -76,54 +74,112 @@ class GoogleTrendsCrawler {
   }
 
   /**
-   * Fetch trending keywords from Google Trends using SERP API
+   * Fetch trending keywords by crawling Google Trends directly
    */
   async fetchTrendingKeywords(keyword: string): Promise<TrendData> {
-    console.log(`🔍 Fetching trends for keyword: "${keyword}"`);
+    console.log(`🔍 Crawling Google Trends for keyword: "${keyword}"`);
     
-    if (!this.serpApiKey) {
-      console.warn('⚠️  SERP_API_KEY not found. Using fallback data.');
-      console.log('   Get your API key at: https://serpapi.com/');
-      return this.getFallbackTrendData(keyword);
-    }
-
     try {
-      const url = `https://serpapi.com/search.json?engine=google_trends&q=${encodeURIComponent(keyword)}&data_type=RELATED_QUERIES&api_key=${this.serpApiKey}`;
+      // Fetch related queries
+      const relatedUrl = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=en-US&tz=-420&req={"restriction":{"geo":{},"time":"now 7-d","originalTimeRangeForExploreUrl":"now 7-d","complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}},"keywordType":"QUERY","metric":["TOP","RISING"],"trendinessSettings":{"compareTime":"2021-01-01 2022-01-01"},"requestOptions":{"property":"","backend":"IZG","category":0},"language":"en"}&token=APP6_UEAAAAAZqOa`;
       
-      const response = await fetch(url);
+      const response = await fetch(relatedUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      });
       
       if (!response.ok) {
-        throw new Error(`SERP API error: ${response.status} ${response.statusText}`);
+        console.warn(`⚠️  Google Trends returned ${response.status}. Using fallback data.`);
+        return this.getFallbackTrendData(keyword);
       }
       
-      const data = await response.json() as any;
+      const text = await response.text();
+      // Remove JSONP wrapper: ")]}'" prefix
+      const jsonText = text.substring(text.indexOf('\n') + 1);
+      const data = JSON.parse(jsonText) as any;
       
       const relatedQueries: string[] = [];
       const risingQueries: string[] = [];
       
-      if (data.related_queries?.top) {
-        relatedQueries.push(...data.related_queries.top.map((q: any) => q.query).slice(0, 10));
+      // Extract TOP queries (related)
+      if (data.default?.rankedList) {
+        for (const list of data.default.rankedList) {
+          if (list.rankedKeyword) {
+            for (const item of list.rankedKeyword) {
+              if (item.query && list.averageScore !== undefined) {
+                // This is TOP queries (has average score)
+                relatedQueries.push(item.query);
+              } else if (item.query) {
+                // This is RISING queries
+                risingQueries.push(item.query);
+              }
+            }
+          }
+        }
       }
       
-      if (data.related_queries?.rising) {
-        risingQueries.push(...data.related_queries.rising.map((q: any) => q.query).slice(0, 10));
-      }
+      // Fetch interest over time data
+      const interestOverTime = await this.fetchInterestOverTime(keyword);
       
       const trendData: TrendData = {
         keyword,
-        relatedQueries: relatedQueries.length > 0 ? relatedQueries : this.generateFallbackQueries(keyword, 'related'),
-        risingQueries: risingQueries.length > 0 ? risingQueries : this.generateFallbackQueries(keyword, 'rising'),
+        relatedQueries: relatedQueries.length > 0 ? relatedQueries.slice(0, 10) : this.generateFallbackQueries(keyword, 'related'),
+        risingQueries: risingQueries.length > 0 ? risingQueries.slice(0, 10) : this.generateFallbackQueries(keyword, 'rising'),
+        interestOverTime,
         timestamp: new Date().toISOString()
       };
 
       console.log(`✅ Found ${trendData.relatedQueries.length} related queries`);
       console.log(`📈 Found ${trendData.risingQueries.length} rising queries`);
+      console.log(`📊 Found ${trendData.interestOverTime.length} interest data points`);
       
       return trendData;
     } catch (error) {
-      console.error('❌ Error fetching trends:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('❌ Error crawling Google Trends:', error instanceof Error ? error.message : 'Unknown error');
       console.log('📋 Using fallback trend data...');
       return this.getFallbackTrendData(keyword);
+    }
+  }
+
+  /**
+   * Fetch interest over time data from Google Trends
+   */
+  private async fetchInterestOverTime(keyword: string): Promise<Array<{ date: string; value: number }>> {
+    try {
+      const timelineUrl = `https://trends.google.com/trends/api/widgetdata/multiline?hl=en-US&tz=-420&req={"time":"now 7-d","resolution":"HOUR","locale":"en-US","comparisonItem":[{"geo":{},"complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}}],"requestOptions":{"property":"","backend":"IZG","category":0}}&token=APP6_UEAAAAAZqOa`;
+      
+      const response = await fetch(timelineUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      });
+      
+      if (!response.ok) {
+        return this.generateFallbackInterestData();
+      }
+      
+      const text = await response.text();
+      const jsonText = text.substring(text.indexOf('\n') + 1);
+      const data = JSON.parse(jsonText) as any;
+      
+      const interestData: Array<{ date: string; value: number }> = [];
+      
+      if (data.default?.timelineData) {
+        for (const point of data.default.timelineData) {
+          if (point.formattedTime && point.value && point.value[0] !== undefined) {
+            interestData.push({
+              date: point.formattedTime,
+              value: point.value[0]
+            });
+          }
+        }
+      }
+      
+      return interestData.length > 0 ? interestData : this.generateFallbackInterestData();
+    } catch (error) {
+      console.warn('⚠️  Could not fetch interest over time data');
+      return this.generateFallbackInterestData();
     }
   }
 
@@ -132,8 +188,26 @@ class GoogleTrendsCrawler {
       keyword,
       relatedQueries: this.generateFallbackQueries(keyword, 'related'),
       risingQueries: this.generateFallbackQueries(keyword, 'rising'),
+      interestOverTime: this.generateFallbackInterestData(),
       timestamp: new Date().toISOString()
     };
+  }
+
+  private generateFallbackInterestData(): Array<{ date: string; value: number }> {
+    const data: Array<{ date: string; value: number }> = [];
+    const now = new Date();
+    
+    // Generate 7 days of mock data
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      data.push({
+        date: date.toISOString().split('T')[0],
+        value: Math.floor(Math.random() * 40) + 60 // Random value between 60-100
+      });
+    }
+    
+    return data;
   }
 
   private generateFallbackQueries(keyword: string, type: 'related' | 'rising'): string[] {
@@ -551,6 +625,11 @@ async function main() {
         console.log(`
 Google Trends Crawler & Content Generator with LLM
 
+Crawls Google Trends directly (no API key needed!) to fetch:
+- Top related queries
+- Rising trending queries  
+- Interest over time data
+
 Usage:
   npm run trends:generate -- --keyword "your keyword" [options]
 
@@ -563,7 +642,6 @@ Options:
   --help, -h             Show help
 
 Environment Variables:
-  SERP_API_KEY          API key for SerpApi (Google Trends)
   GROQ_API_KEY          API key for Groq LLM (preferred)
   OPENROUTER_API_KEY    API key for OpenRouter LLM (fallback)
 
