@@ -204,7 +204,12 @@ class GoogleTrendsCrawler {
     }
   }
 
+  /**
+   * Get fallback trend data when Google Trends is unavailable
+   * Returns realistic mock data based on common search patterns
+   */
   private getFallbackTrendData(keyword: string): TrendData {
+    console.log('📋 Using enhanced fallback trend data with realistic patterns');
     return {
       keyword,
       relatedQueries: this.generateFallbackQueries(keyword, 'related'),
@@ -214,23 +219,45 @@ class GoogleTrendsCrawler {
     };
   }
 
+  /**
+   * Generate realistic interest over time data for fallback
+   * Creates natural-looking trend data with day-to-day variations
+   */
   private generateFallbackInterestData(): Array<{ date: string; value: number }> {
     const data: Array<{ date: string; value: number }> = [];
     const now = new Date();
     
-    // Generate 7 days of mock data
+    // Generate 7 days of realistic trend data with some variation
+    // Start with a base value and add natural variation
+    const baseValue = 70;
+    let previousValue = baseValue;
+    
     for (let i = 6; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
+      
+      // Add realistic variation: small changes from previous day
+      const change = (Math.random() - 0.5) * 15; // -7.5 to +7.5
+      let value = Math.round(previousValue + change);
+      
+      // Keep value in reasonable range (40-100)
+      value = Math.max(40, Math.min(100, value));
+      
       data.push({
         date: date.toISOString().split('T')[0],
-        value: Math.floor(Math.random() * 40) + 60 // Random value between 60-100
+        value: value
       });
+      
+      previousValue = value;
     }
     
     return data;
   }
 
+  /**
+   * Generate fallback queries when Google Trends is unavailable
+   * These are realistic query patterns based on common search behaviors
+   */
   private generateFallbackQueries(keyword: string, type: 'related' | 'rising'): string[] {
     const currentYear = new Date().getFullYear();
     if (type === 'related') {
@@ -242,7 +269,9 @@ class GoogleTrendsCrawler {
         `${keyword} guide`,
         `${keyword} tutorial`,
         `${keyword} tips`,
-        `${keyword} examples`
+        `${keyword} examples`,
+        `learn ${keyword}`,
+        `${keyword} for beginners`
       ];
     } else {
       return [
@@ -250,7 +279,10 @@ class GoogleTrendsCrawler {
         `${keyword} automation`,
         `latest ${keyword}`,
         `${keyword} tools`,
-        `${keyword} software`
+        `${keyword} software`,
+        `${keyword} free`,
+        `${keyword} online`,
+        `${keyword} course`
       ];
     }
   }

@@ -39,26 +39,35 @@ npm install -g ctx7
 
 ### 3. Set Up OpenCode Skills
 
-Install AI coding skills using ctx7:
+Install AI coding skills using the installation script:
 
 ```bash
 # Run the skills installation script
 ./install-skills.sh
-
-# Or search and install skills manually
-ctx7 skills search remotion
-ctx7 skills search frontend
-ctx7 skills search backend
-ctx7 skills search playwright
 ```
 
-Available skills (install based on ctx7 registry):
-- `remotion` - Video generation with React
-- `frontend-design` - Modern web UI with Next.js + Tailwind
-- `backend` - RESTful API with Express + TypeScript
+**The script automatically handles two scenarios:**
+
+1. **When network is available**: Attempts to install skills via ctx7 from the registry
+2. **When network is unavailable**: Uses local fallback skill definitions from `.opencode/skills/`
+
+**Available skills:**
+- `remotion` - Video generation with React and Remotion
+- `frontend-design` - Modern web UI with Next.js + Tailwind CSS
+- `backend` - RESTful API with Express + TypeScript  
 - `testing` - E2E testing with Playwright
 
-**Note:** Visit https://context7.com to browse available skills in the registry.
+**Manual ctx7 management (when network available):**
+```bash
+# Search for skills
+ctx7 skills search remotion
+ctx7 skills search frontend
+
+# List installed skills
+ctx7 skills list
+```
+
+**Note:** Fallback skills are always available in `.opencode/skills/` - they work offline and provide comprehensive guidelines for AI coding assistance.
 
 List installed skills:
 ```bash
@@ -105,8 +114,13 @@ Generate AI-powered content based on trending keywords by **crawling Google Tren
   - Top related queries
   - Rising trending queries
   - Interest over time data
+- **Enhanced Fallback System**: When network is restricted or Google Trends unavailable:
+  - Uses realistic mock data with natural variations
+  - Generates contextual related queries based on keyword
+  - Creates interest over time data with day-to-day trends
+  - Ensures the tool always works, even offline
 - **AI-Powered Content**: Uses Groq or OpenRouter LLM to generate high-quality content
-- **Fallback Support**: Works without LLM API keys using template-based generation
+- **Template Fallback**: Works without LLM API keys using template-based generation
 
 ### Usage
 
@@ -124,9 +138,21 @@ npm run trends:generate -- --keyword "marketing" --no-article
 npm run trends:generate -- --keyword "technology" --output-dir ./content
 ```
 
+### How It Works
+
+**The script has multiple fallback layers:**
+
+1. **Primary**: Attempts to crawl Google Trends directly for real data
+2. **Fallback**: If network unavailable, uses enhanced mock data that:
+   - Generates realistic related and rising queries
+   - Creates natural interest over time patterns
+   - Provides useful data for content generation
+
+**This ensures the tool always works, regardless of network conditions!**
+
 ### API Configuration
 
-**No API key needed for Google Trends data!** The script crawls Google Trends directly.
+**No API key needed for Google Trends data!** The script crawls Google Trends directly, with intelligent fallbacks.
 
 For AI-powered content generation (optional), configure LLM API keys in `.env`:
 

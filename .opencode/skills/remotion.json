@@ -1,0 +1,67 @@
+{
+  "name": "remotion",
+  "description": "Video and animation generation using Remotion - programmatic video creation with React",
+  "version": "1.0.0",
+  "capabilities": [
+    "video-generation",
+    "animation",
+    "motion-graphics",
+    "programmatic-video",
+    "react-based-composition"
+  ],
+  "dependencies": {
+    "remotion": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "@remotion/lambda": "^4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "configuration": {
+    "videoFormat": "mp4",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 300,
+    "codec": "h264"
+  },
+  "examples": [
+    {
+      "name": "Landing Page Video",
+      "description": "Generate promotional video for landing page with animations",
+      "command": "npm run remotion:render -- --props '{\"title\":\"My Product\"}'"
+    },
+    {
+      "name": "Social Media Clip",
+      "description": "Create short video for social media in square format",
+      "command": "npm run remotion:render -- --props '{\"format\":\"square\",\"duration\":15}'"
+    },
+    {
+      "name": "Explainer Video",
+      "description": "Create animated explainer video with text and graphics",
+      "command": "npm run remotion:render -- explainer"
+    }
+  ],
+  "guidelines": [
+    "Use TypeScript for all Remotion components for type safety",
+    "Keep video components modular and reusable",
+    "Use interpolation() for smooth animations",
+    "Export compositions in multiple formats for different platforms",
+    "Optimize rendering performance by using useCurrentFrame() efficiently",
+    "Use spring() for natural, physics-based animations",
+    "Leverage AbsoluteFill for layout management",
+    "Test videos at different frame rates before final render",
+    "Use Sequence for timing multiple animations",
+    "Cache heavy computations outside of render loop"
+  ],
+  "best_practices": [
+    "Structure projects with clear composition hierarchy",
+    "Use props for configurable video content",
+    "Implement progress indicators for long renders",
+    "Version control rendered videos metadata",
+    "Use environment variables for configuration",
+    "Implement error boundaries in compositions",
+    "Test on target playback devices",
+    "Optimize asset loading and caching"
+  ]
+}

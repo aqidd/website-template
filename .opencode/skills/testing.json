@@ -1,0 +1,85 @@
+{
+  "name": "testing",
+  "description": "End-to-end testing with Playwright for web applications - cross-browser testing and automation",
+  "version": "1.0.0",
+  "capabilities": [
+    "e2e-testing",
+    "visual-regression",
+    "cross-browser-testing",
+    "mobile-testing",
+    "api-testing",
+    "accessibility-testing",
+    "performance-testing"
+  ],
+  "dependencies": {
+    "@playwright/test": "^1.40.0",
+    "playwright": "^1.40.0",
+    "@axe-core/playwright": "^4.8.0"
+  },
+  "configuration": {
+    "browsers": ["chromium", "firefox", "webkit"],
+    "testDir": "./tests/e2e",
+    "baseURL": "http://localhost:3000",
+    "timeout": 30000,
+    "retries": 2,
+    "workers": 4,
+    "screenshots": "only-on-failure",
+    "video": "retain-on-failure",
+    "trace": "on-first-retry"
+  },
+  "examples": [
+    {
+      "name": "Landing Page Test",
+      "description": "Test landing page functionality, navigation, and interactions",
+      "command": "npx playwright test landing-page.spec.ts"
+    },
+    {
+      "name": "Form Submission Test",
+      "description": "Test form validation, submission, and error handling",
+      "command": "npx playwright test forms.spec.ts"
+    },
+    {
+      "name": "Visual Regression Test",
+      "description": "Compare screenshots for visual changes across builds",
+      "command": "npx playwright test --update-snapshots"
+    },
+    {
+      "name": "API Testing",
+      "description": "Test API endpoints and responses",
+      "command": "npx playwright test api.spec.ts"
+    }
+  ],
+  "guidelines": [
+    "Write tests that are independent and can run in any order",
+    "Use Page Object Model (POM) pattern for better maintainability",
+    "Test across multiple browsers (Chromium, Firefox, WebKit/Safari)",
+    "Include mobile viewport testing for responsive designs",
+    "Use data-testid attributes for reliable element selection",
+    "Test critical user flows end-to-end",
+    "Add visual regression tests for important pages",
+    "Test accessibility using axe-core integration",
+    "Mock external API calls for consistent testing",
+    "Use fixtures for test data setup and teardown",
+    "Run tests in CI/CD pipeline",
+    "Generate and review HTML test reports",
+    "Implement proper wait strategies (avoid arbitrary sleeps)",
+    "Test error states and edge cases",
+    "Use tracing for debugging failed tests"
+  ],
+  "best_practices": [
+    "Organize tests by feature or page",
+    "Use descriptive test names that explain what is being tested",
+    "Keep tests focused on user behavior, not implementation",
+    "Use beforeEach/afterEach for setup/cleanup",
+    "Parameterize tests for testing multiple scenarios",
+    "Use soft assertions for multiple checks in one test",
+    "Implement custom matchers for domain-specific assertions",
+    "Use network interception for testing loading states",
+    "Test keyboard navigation and screen reader compatibility",
+    "Run tests in parallel for faster execution",
+    "Use tags to organize and filter tests",
+    "Implement continuous screenshot comparison",
+    "Test authentication flows thoroughly",
+    "Monitor test flakiness and fix unstable tests"
+  ]
+}
