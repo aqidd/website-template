@@ -7,8 +7,8 @@
  * articles and landing pages based on trending and related keywords.
  * 
  * Usage:
- *   node scripts/trends-crawler.js --keyword "technology" --count 10
- *   node scripts/trends-crawler.js --keyword "ai tools" --generate-landing-page
+ *   npm run trends:generate -- --keyword "technology" --count 10
+ *   npm run trends:generate -- --keyword "ai tools" --no-article
  */
 
 import fs from 'fs';
@@ -441,7 +441,7 @@ async function main() {
 Google Trends Crawler & Content Generator
 
 Usage:
-  node scripts/trends-crawler.js --keyword "your keyword" [options]
+  npm run trends:generate -- --keyword "your keyword" [options]
 
 Options:
   --keyword, -k          Keyword to search for trends (required)
@@ -452,9 +452,9 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  node scripts/trends-crawler.js --keyword "artificial intelligence"
-  node scripts/trends-crawler.js --keyword "web development" --count 10
-  node scripts/trends-crawler.js -k "marketing" --no-article
+  npm run trends:generate -- --keyword "artificial intelligence"
+  npm run trends:generate -- --keyword "web development" --count 10
+  npm run trends:generate -- --keyword "marketing" --no-article
         `);
         process.exit(0);
     }
