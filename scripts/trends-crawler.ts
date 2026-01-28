@@ -11,7 +11,6 @@
  *   node scripts/trends-crawler.js --keyword "ai tools" --generate-landing-page
  */
 
-import https from 'https';
 import fs from 'fs';
 import path from 'path';
 
@@ -31,11 +30,9 @@ interface ContentOptions {
 }
 
 class GoogleTrendsCrawler {
-  private apiKey: string;
   private outputDir: string;
 
   constructor(outputDir = './generated-content') {
-    this.apiKey = process.env.SERP_API_KEY || '';
     this.outputDir = outputDir;
     
     // Create output directory if it doesn't exist
@@ -46,6 +43,8 @@ class GoogleTrendsCrawler {
 
   /**
    * Fetch trending keywords related to a search term
+   * Note: This is a mock implementation. In production, integrate with
+   * Google Trends API or SERP API using the SERP_API_KEY environment variable.
    */
   async fetchTrendingKeywords(keyword: string): Promise<TrendData> {
     console.log(`🔍 Fetching trends for keyword: "${keyword}"`);
