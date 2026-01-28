@@ -39,6 +39,10 @@ interface LLMProvider {
   model: string;
 }
 
+// Constants for Google Trends API
+const GOOGLE_TRENDS_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+const GOOGLE_TRENDS_TOKEN = 'APP6_UEAAAAAZqOa'; // Note: This token may need periodic updates if Google changes their API
+
 class GoogleTrendsCrawler {
   private outputDir: string;
   private llmProvider: LLMProvider;
@@ -75,17 +79,19 @@ class GoogleTrendsCrawler {
 
   /**
    * Fetch trending keywords by crawling Google Trends directly
+   * Note: This uses Google Trends public API endpoints which may change over time.
+   * If requests fail, the script falls back to generated mock data.
    */
   async fetchTrendingKeywords(keyword: string): Promise<TrendData> {
     console.log(`🔍 Crawling Google Trends for keyword: "${keyword}"`);
     
     try {
       // Fetch related queries
-      const relatedUrl = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=en-US&tz=-420&req={"restriction":{"geo":{},"time":"now 7-d","originalTimeRangeForExploreUrl":"now 7-d","complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}},"keywordType":"QUERY","metric":["TOP","RISING"],"trendinessSettings":{"compareTime":"2021-01-01 2022-01-01"},"requestOptions":{"property":"","backend":"IZG","category":0},"language":"en"}&token=APP6_UEAAAAAZqOa`;
+      const relatedUrl = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=en-US&tz=-420&req={"restriction":{"geo":{},"time":"now 7-d","originalTimeRangeForExploreUrl":"now 7-d","complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}},"keywordType":"QUERY","metric":["TOP","RISING"],"trendinessSettings":{"compareTime":"2021-01-01 2022-01-01"},"requestOptions":{"property":"","backend":"IZG","category":0},"language":"en"}&token=${GOOGLE_TRENDS_TOKEN}`;
       
       const response = await fetch(relatedUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          'User-Agent': GOOGLE_TRENDS_USER_AGENT
         }
       });
       
@@ -95,24 +101,33 @@ class GoogleTrendsCrawler {
       }
       
       const text = await response.text();
-      // Remove JSONP wrapper: ")]}'" prefix
+      
+      // Remove JSONP wrapper: Google Trends responses start with ")]}'\n"
+      if (!text.includes('\n')) {
+        console.warn('⚠️  Unexpected response format from Google Trends. Using fallback data.');
+        return this.getFallbackTrendData(keyword);
+      }
+      
       const jsonText = text.substring(text.indexOf('\n') + 1);
       const data = JSON.parse(jsonText) as any;
       
       const relatedQueries: string[] = [];
       const risingQueries: string[] = [];
       
-      // Extract TOP queries (related)
+      // Extract queries from ranked lists
       if (data.default?.rankedList) {
         for (const list of data.default.rankedList) {
           if (list.rankedKeyword) {
+            // Determine if this is TOP or RISING based on list properties
+            const isRisingList = list.rankedKeyword.some((item: any) => item.value !== undefined);
+            
             for (const item of list.rankedKeyword) {
-              if (item.query && list.averageScore !== undefined) {
-                // This is TOP queries (has average score)
-                relatedQueries.push(item.query);
-              } else if (item.query) {
-                // This is RISING queries
-                risingQueries.push(item.query);
+              if (item.query) {
+                if (isRisingList) {
+                  risingQueries.push(item.query);
+                } else {
+                  relatedQueries.push(item.query);
+                }
               }
             }
           }
@@ -147,11 +162,11 @@ class GoogleTrendsCrawler {
    */
   private async fetchInterestOverTime(keyword: string): Promise<Array<{ date: string; value: number }>> {
     try {
-      const timelineUrl = `https://trends.google.com/trends/api/widgetdata/multiline?hl=en-US&tz=-420&req={"time":"now 7-d","resolution":"HOUR","locale":"en-US","comparisonItem":[{"geo":{},"complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}}],"requestOptions":{"property":"","backend":"IZG","category":0}}&token=APP6_UEAAAAAZqOa`;
+      const timelineUrl = `https://trends.google.com/trends/api/widgetdata/multiline?hl=en-US&tz=-420&req={"time":"now 7-d","resolution":"HOUR","locale":"en-US","comparisonItem":[{"geo":{},"complexKeywordsRestriction":{"keyword":[{"type":"BROAD","value":"${encodeURIComponent(keyword)}"}]}}],"requestOptions":{"property":"","backend":"IZG","category":0}}&token=${GOOGLE_TRENDS_TOKEN}`;
       
       const response = await fetch(timelineUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          'User-Agent': GOOGLE_TRENDS_USER_AGENT
         }
       });
       
@@ -160,6 +175,12 @@ class GoogleTrendsCrawler {
       }
       
       const text = await response.text();
+      
+      // Remove JSONP wrapper
+      if (!text.includes('\n')) {
+        return this.generateFallbackInterestData();
+      }
+      
       const jsonText = text.substring(text.indexOf('\n') + 1);
       const data = JSON.parse(jsonText) as any;
       
@@ -627,7 +648,7 @@ Google Trends Crawler & Content Generator with LLM
 
 Crawls Google Trends directly (no API key needed!) to fetch:
 - Top related queries
-- Rising trending queries  
+- Rising queries  
 - Interest over time data
 
 Usage:
