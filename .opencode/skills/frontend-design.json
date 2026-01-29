@@ -1,0 +1,78 @@
+{
+  "name": "frontend-design",
+  "description": "Modern frontend design with Next.js, React, Tailwind CSS, and responsive layouts",
+  "version": "1.0.0",
+  "capabilities": [
+    "responsive-design",
+    "component-architecture",
+    "state-management",
+    "ui-ux-design",
+    "accessibility",
+    "performance-optimization",
+    "seo-optimization"
+  ],
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "next": "^14.0.0",
+    "tailwindcss": "^3.0.0",
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0",
+    "@headlessui/react": "^1.7.0",
+    "framer-motion": "^10.0.0"
+  },
+  "configuration": {
+    "framework": "next.js",
+    "styling": "tailwindcss",
+    "componentLibrary": "custom",
+    "responsive": true,
+    "darkMode": true,
+    "i18n": true
+  },
+  "examples": [
+    {
+      "name": "Landing Page",
+      "description": "Create modern landing page with hero, features, pricing, and CTA",
+      "command": "npm run dev"
+    },
+    {
+      "name": "Blog Layout",
+      "description": "Generate blog layout with article cards, sidebar, and pagination",
+      "command": "npm run build && npm run start"
+    },
+    {
+      "name": "Dashboard UI",
+      "description": "Build responsive dashboard with charts, tables, and widgets",
+      "command": "npm run dev -- --turbo"
+    }
+  ],
+  "guidelines": [
+    "Use Next.js App Router for routing and layouts",
+    "Implement responsive design using Tailwind CSS utility classes",
+    "Follow mobile-first design approach",
+    "Ensure WCAG 2.1 Level AA accessibility compliance",
+    "Use semantic HTML elements for better SEO",
+    "Optimize images with Next.js Image component",
+    "Implement proper meta tags for SEO and social sharing",
+    "Use CSS variables for theming and design tokens",
+    "Keep components small, focused, and reusable",
+    "Implement proper error boundaries and loading states",
+    "Use Server Components by default, Client Components when needed",
+    "Optimize for Core Web Vitals (LCP, FID, CLS)",
+    "Implement progressive enhancement",
+    "Use proper heading hierarchy (h1-h6)",
+    "Test with keyboard navigation and screen readers"
+  ],
+  "best_practices": [
+    "Organize components by feature/domain",
+    "Use TypeScript for type safety",
+    "Implement design system with consistent spacing and colors",
+    "Use rem/em units for scalable typography",
+    "Implement proper form validation and error messages",
+    "Use lazy loading for images and heavy components",
+    "Implement skeleton loaders for better perceived performance",
+    "Test across different browsers and devices",
+    "Use React DevTools and Lighthouse for optimization",
+    "Document component props and usage examples"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "website-template",
+  "version": "1.0.0",
+  "description": "AI-powered website template with Ralph Wiggum loop, OpenCode skills, and Google Trends integration",
+  "type": "module",
+  "scripts": {
+    "trends:generate": "tsx scripts/trends-crawler.ts",
+    "trends:help": "tsx scripts/trends-crawler.ts --help",
+    "setup": "bash quick-start.sh",
+    "install-skills": "bash install-skills.sh",
+    "validate": "npm run validate:json && npm run validate:typescript",
+    "validate:json": "tsx -e \"import fs from 'fs'; const files = ['ralph-wiggum.config.json']; console.log('Validating JSON files...'); files.forEach(f => { try { JSON.parse(fs.readFileSync(f, 'utf-8')); console.log('✓', f); } catch(e) { console.error('✗', f, e.message); process.exit(1); } });\"",
+    "validate:typescript": "tsc --noEmit"
+  },
+  "keywords": [
+    "ai",
+    "website-template",
+    "ralph-wiggum",
+    "opencode",
+    "trends",
+    "content-generation",
+    "remotion",
+    "playwright"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "optionalDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "autoprefixer": "^10.0.0",
+    "next": "^14.0.0",
+    "postcss": "^8.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "^4.0.0",
+    "tailwindcss": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

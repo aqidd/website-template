@@ -1,0 +1,87 @@
+{
+  "name": "backend",
+  "description": "Backend API development with Node.js, Express, TypeScript, and database integration",
+  "version": "1.0.0",
+  "capabilities": [
+    "api-development",
+    "database-management",
+    "authentication",
+    "authorization",
+    "data-validation",
+    "error-handling",
+    "security",
+    "testing"
+  ],
+  "dependencies": {
+    "express": "^4.18.0",
+    "typescript": "^5.0.0",
+    "@types/express": "^4.17.0",
+    "@types/node": "^20.0.0",
+    "dotenv": "^16.0.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "express-validator": "^7.0.0",
+    "winston": "^3.0.0"
+  },
+  "configuration": {
+    "runtime": "node",
+    "framework": "express",
+    "database": "postgresql",
+    "orm": "prisma",
+    "authentication": "jwt",
+    "port": 3001,
+    "apiVersion": "v1"
+  },
+  "examples": [
+    {
+      "name": "REST API",
+      "description": "Create RESTful API endpoints with CRUD operations",
+      "command": "npm run server"
+    },
+    {
+      "name": "GraphQL API",
+      "description": "Set up GraphQL server with type definitions and resolvers",
+      "command": "npm run graphql"
+    },
+    {
+      "name": "WebSocket Server",
+      "description": "Implement real-time communication with WebSockets",
+      "command": "npm run websocket"
+    }
+  ],
+  "guidelines": [
+    "Use TypeScript for type safety and better developer experience",
+    "Implement proper error handling middleware",
+    "Use environment variables for all configuration",
+    "Implement request validation using express-validator or Zod",
+    "Use async/await for asynchronous operations",
+    "Implement comprehensive logging with Winston or Pino",
+    "Add rate limiting for API endpoints",
+    "Use parameterized queries to prevent SQL injection",
+    "Implement proper CORS configuration",
+    "Add security headers using helmet middleware",
+    "Structure code using MVC or clean architecture",
+    "Write unit tests for business logic",
+    "Implement proper authentication and authorization",
+    "Use middleware for common functionality",
+    "Document API endpoints with OpenAPI/Swagger"
+  ],
+  "best_practices": [
+    "Separate concerns: routes, controllers, services, repositories",
+    "Use dependency injection for testability",
+    "Implement proper database migrations",
+    "Use transactions for complex operations",
+    "Cache frequently accessed data",
+    "Implement API versioning",
+    "Use DTOs for data transfer",
+    "Validate input at API boundary",
+    "Implement graceful shutdown",
+    "Monitor performance and errors",
+    "Use connection pooling for database",
+    "Implement request timeouts",
+    "Follow RESTful conventions",
+    "Use status codes correctly"
+  ]
+}

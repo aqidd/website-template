@@ -1,0 +1,12 @@
+{
+  "agent": "opencode",
+  "maxIterations": 50,
+  "minIterations": 1,
+  "completionPromise": "COMPLETE",
+  "tasks": true,
+  "taskPromise": "READY_FOR_NEXT_TASK",
+  "noCommit": false,
+  "allowAll": true,
+  "stream": true,
+  "verboseTools": false
+}
