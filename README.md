@@ -65,6 +65,15 @@ ctx7 skills search frontend
 
 # List installed skills
 ctx7 skills list
+
+npx ctx7 skills install /anthropics/skills frontend-design
+npx ctx7 skills install /anthropics/skills pdf
+npx ctx7 skills install /remotion-dev/skills remotion-best-practices
+npx ctx7 skills install /alirezarezvani/claude-skills senior-backend
+npx ctx7 skills install /anthropics/skills webapp-testing
+npx ctx7 skills install /anthropics/skills skill-creator
+npx ctx7 skills install /anthropics/skills web-artifacts-builder
+
 ```
 
 **Note:** Fallback skills are always available in `.opencode/skills/` - they work offline and provide comprehensive guidelines for AI coding assistance.

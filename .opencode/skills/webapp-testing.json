@@ -1,0 +1,65 @@
+{
+  "name": "webapp-testing",
+  "description": "Comprehensive web application testing strategies and tools for quality assurance",
+  "version": "1.0.0",
+  "capabilities": [
+    "unit-testing",
+    "integration-testing",
+    "end-to-end-testing",
+    "visual-regression-testing",
+    "performance-testing",
+    "accessibility-testing",
+    "security-testing",
+    "test-automation"
+  ],
+  "dependencies": {
+    "jest": "^29.0.0",
+    "vitest": "^0.34.0",
+    "playwright": "^1.40.0",
+    "cypress": "^13.0.0",
+    "testing-library": "^14.0.0",
+    "lighthouse": "^11.0.0"
+  },
+  "configuration": {
+    "testRunner": "jest",
+    "coverage": 80,
+    "e2eFramework": "playwright",
+    "reportFormat": "html"
+  },
+  "examples": [
+    {
+      "name": "E2E Test Suite",
+      "description": "Create comprehensive end-to-end tests with Playwright",
+      "command": "npm run test:e2e"
+    },
+    {
+      "name": "Unit Tests",
+      "description": "Write unit tests with Jest and React Testing Library",
+      "command": "npm test"
+    }
+  ],
+  "guidelines": [
+    "Write tests that cover user flows and interactions",
+    "Use descriptive test names that explain what is being tested",
+    "Keep tests focused and independent",
+    "Mock external dependencies appropriately",
+    "Test error scenarios and edge cases",
+    "Use fixtures for test data",
+    "Implement proper test cleanup",
+    "Avoid testing implementation details",
+    "Test accessibility features",
+    "Monitor test execution time"
+  ],
+  "best_practices": [
+    "Aim for high code coverage (80%+)",
+    "Use snapshot testing cautiously",
+    "Implement continuous integration testing",
+    "Separate unit, integration, and e2e tests",
+    "Use page objects for e2e testing",
+    "Test both happy paths and error states",
+    "Implement visual regression testing",
+    "Test performance and Core Web Vitals",
+    "Document test scenarios",
+    "Keep test data separate from test logic"
+  ]
+}

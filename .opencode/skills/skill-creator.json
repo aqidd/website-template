@@ -1,0 +1,59 @@
+{
+  "name": "skill-creator",
+  "description": "Create and maintain custom skills for OpenCode and context7 systems",
+  "version": "1.0.0",
+  "capabilities": [
+    "skill-scaffolding",
+    "skill-validation",
+    "skill-packaging",
+    "skill-publishing",
+    "documentation-generation",
+    "version-management",
+    "skill-testing"
+  ],
+  "dependencies": {
+    "ctx7": "^1.0.0",
+    "opencode": "^1.0.0",
+    "json-schema": "^0.4.0"
+  },
+  "configuration": {
+    "schemaVersion": "1.0",
+    "format": "json",
+    "validation": true,
+    "documentation": "markdown"
+  },
+  "examples": [
+    {
+      "name": "Create New Skill",
+      "description": "Scaffold a new skill with all required files and structure",
+      "command": "ctx7 skill create my-skill"
+    },
+    {
+      "name": "Publish Skill",
+      "description": "Publish custom skill to public registry",
+      "command": "ctx7 skill publish"
+    }
+  ],
+  "guidelines": [
+    "Follow JSON schema for skill definition",
+    "Include comprehensive capabilities list",
+    "Provide clear examples and use cases",
+    "Document all configuration options",
+    "Include best practices and guidelines",
+    "Add version information",
+    "List all dependencies",
+    "Provide clear skill descriptions"
+  ],
+  "best_practices": [
+    "Use semantic versioning",
+    "Include example commands",
+    "Document all capabilities",
+    "Validate skill JSON against schema",
+    "Provide multiple examples",
+    "Keep skill focused and composable",
+    "Update skills regularly",
+    "Include license information",
+    "Test skills before publishing",
+    "Maintain changelog"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "senior-backend",
+  "description": "Enterprise-grade backend development with advanced patterns, architecture, and best practices",
+  "version": "1.0.0",
+  "capabilities": [
+    "microservices-architecture",
+    "distributed-systems",
+    "database-optimization",
+    "api-design",
+    "authentication-authorization",
+    "caching-strategies",
+    "monitoring-logging",
+    "performance-tuning",
+    "security-hardening"
+  ],
+  "dependencies": {
+    "express": "^4.18.0",
+    "postgresql": "^15.0.0",
+    "redis": "^4.0.0",
+    "graphql": "^16.0.0",
+    "mongoose": "^7.0.0",
+    "passport": "^0.6.0"
+  },
+  "configuration": {
+    "environment": "production",
+    "logging": "structured",
+    "monitoring": true,
+    "caching": true,
+    "database": "postgresql"
+  },
+  "examples": [
+    {
+      "name": "Microservices Setup",
+      "description": "Build scalable microservices architecture with service discovery",
+      "command": "npm run dev"
+    },
+    {
+      "name": "GraphQL API",
+      "description": "Create efficient GraphQL API with caching and optimization",
+      "command": "npm run build && npm start"
+    }
+  ],
+  "guidelines": [
+    "Design for horizontal scalability",
+    "Implement proper error handling and recovery",
+    "Use database transactions for data consistency",
+    "Implement rate limiting and DDoS protection",
+    "Design RESTful APIs with proper HTTP methods",
+    "Use caching strategically (Redis, HTTP caching)",
+    "Implement comprehensive logging and monitoring",
+    "Use dependency injection for flexibility",
+    "Implement proper database indexing",
+    "Design for failure and implement circuit breakers"
+  ],
+  "best_practices": [
+    "Follow SOLID principles",
+    "Implement comprehensive testing (unit, integration, e2e)",
+    "Use API versioning for backward compatibility",
+    "Document APIs with OpenAPI/Swagger",
+    "Implement proper authentication (JWT, OAuth2)",
+    "Use environment-based configuration",
+    "Implement health checks and readiness probes",
+    "Use connection pooling for databases",
+    "Implement proper request validation",
+    "Use async/await and promises properly"
+  ]
+}

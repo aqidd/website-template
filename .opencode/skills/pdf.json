@@ -1,0 +1,56 @@
+{
+  "name": "pdf",
+  "description": "PDF generation and manipulation capabilities for creating, parsing, and modifying PDF documents",
+  "version": "1.0.0",
+  "capabilities": [
+    "pdf-generation",
+    "pdf-parsing",
+    "pdf-manipulation",
+    "template-rendering",
+    "form-filling",
+    "metadata-extraction",
+    "page-manipulation"
+  ],
+  "dependencies": {
+    "pdfkit": "^0.13.0",
+    "pdf-parse": "^1.1.1",
+    "pdf-lib": "^1.17.0"
+  },
+  "configuration": {
+    "format": "A4",
+    "margins": {
+      "top": 20,
+      "right": 20,
+      "bottom": 20,
+      "left": 20
+    },
+    "compression": true,
+    "encryption": false
+  },
+  "examples": [
+    {
+      "name": "Generate Invoice",
+      "description": "Create professional invoice PDF with header, items, and totals",
+      "command": "npm run generate:invoice"
+    },
+    {
+      "name": "Extract Text",
+      "description": "Extract and parse text content from existing PDF documents",
+      "command": "npm run extract:text"
+    }
+  ],
+  "guidelines": [
+    "Use appropriate fonts for better compatibility",
+    "Optimize file size with compression",
+    "Include proper metadata and document info",
+    "Test PDF rendering across viewers",
+    "Handle special characters and encoding properly"
+  ],
+  "best_practices": [
+    "Create reusable PDF templates",
+    "Use streaming for large documents",
+    "Implement error handling for file operations",
+    "Add document security when needed",
+    "Validate input data before PDF generation"
+  ]
+}

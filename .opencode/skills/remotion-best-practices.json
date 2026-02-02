@@ -1,0 +1,55 @@
+{
+  "name": "remotion-best-practices",
+  "description": "Best practices and advanced techniques for creating video content with Remotion",
+  "version": "1.0.0",
+  "capabilities": [
+    "video-composition",
+    "animation-optimization",
+    "performance-tuning",
+    "rendering-strategies",
+    "asset-management",
+    "code-organization",
+    "testing-video-projects"
+  ],
+  "dependencies": {
+    "remotion": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.0.0"
+  },
+  "configuration": {
+    "fps": 30,
+    "duration": "auto",
+    "codec": "h264",
+    "quality": 80
+  },
+  "examples": [
+    {
+      "name": "Optimized Composition",
+      "description": "Create highly optimized video composition with lazy loading",
+      "command": "npm run build"
+    },
+    {
+      "name": "Advanced Animations",
+      "description": "Implement smooth, performant animations using Remotion hooks",
+      "command": "npm run dev"
+    }
+  ],
+  "guidelines": [
+    "Use useCallback to memoize expensive computations",
+    "Lazy load heavy components and assets",
+    "Optimize for render time and memory usage",
+    "Use RemotionConfig for project settings",
+    "Implement proper error boundaries",
+    "Profile video compositions for bottlenecks"
+  ],
+  "best_practices": [
+    "Keep sequences modular and reusable",
+    "Use CSS-in-JS for dynamic styling",
+    "Implement proper asset cleanup",
+    "Use AbsoluteFill for layout consistency",
+    "Test rendering with different resolutions",
+    "Document composition props and structure",
+    "Use TypeScript for type safety",
+    "Implement proper image and font management"
+  ]
+}

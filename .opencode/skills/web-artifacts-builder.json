@@ -1,0 +1,62 @@
+{
+  "name": "web-artifacts-builder",
+  "description": "Build, generate, and manage web artifacts for modern web applications",
+  "version": "1.0.0",
+  "capabilities": [
+    "static-site-generation",
+    "artifact-bundling",
+    "asset-optimization",
+    "code-splitting",
+    "manifest-generation",
+    "build-optimization",
+    "deployment-artifacts",
+    "source-maps"
+  ],
+  "dependencies": {
+    "webpack": "^5.0.0",
+    "vite": "^4.0.0",
+    "esbuild": "^0.18.0",
+    "rollup": "^3.0.0",
+    "terser": "^5.0.0"
+  },
+  "configuration": {
+    "format": "esm",
+    "minify": true,
+    "sourceMap": true,
+    "bundler": "vite"
+  },
+  "examples": [
+    {
+      "name": "Build Web App",
+      "description": "Create optimized production build with code splitting",
+      "command": "npm run build"
+    },
+    {
+      "name": "Static Site Generation",
+      "description": "Generate static HTML artifacts for static hosting",
+      "command": "npm run generate"
+    }
+  ],
+  "guidelines": [
+    "Optimize bundle size with tree-shaking",
+    "Implement code splitting for better performance",
+    "Use lazy loading for dynamic imports",
+    "Generate source maps for debugging",
+    "Minify and compress assets",
+    "Use proper file hashing for caching",
+    "Optimize images and media",
+    "Generate manifest files"
+  ],
+  "best_practices": [
+    "Monitor bundle size metrics",
+    "Implement incremental static regeneration",
+    "Use asset fingerprinting for cache busting",
+    "Implement proper error handling",
+    "Generate build reports",
+    "Test artifacts before deployment",
+    "Use content hash for long-term caching",
+    "Implement service worker",
+    "Optimize critical path resources",
+    "Use modern JavaScript features with fallbacks"
+  ]
+}
